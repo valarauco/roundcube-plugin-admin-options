@@ -17,9 +17,9 @@ class admin_options extends rcube_plugin
     function init()
     {
         $this->rc = rcmail::get_instance();
-        $this->load_config();       
+        $this->load_config();
         // Settings Tab
-        if ($this->rc->task == 'settings') { 
+        if ($this->rc->task == 'settings') {
           $user = $this->rc->user->get_username();
           $admins =  $this->rc->config->get('admin_options_users', array());
           if (in_array($user, $admins, true)) {
@@ -31,19 +31,19 @@ class admin_options extends rcube_plugin
           }
         }
     }
-    
-    // ADMIN OPTION UI //   
+
+    // ADMIN OPTION UI //
     function settings_tab($p)
 	  {
-	    $p['actions'][] = array('action' => $this->plug_name, 
-	                        'type' => 'link', 
-	                        'class' => 'admin-options', 
-	                        'label' => 'admin_options.administration', 
+	    $p['actions'][] = array('action' => $this->plug_name,
+	                        'type' => 'link',
+	                        'class' => 'admin-options',
+	                        'label' => 'admin_options.administration',
 	                        'title' => 'admin_options.administration');
 
       return $p;
 	  }
-	  
+
 	  function admin_frame($attrib)
 	  {
 		  if (!$attrib['id'])
@@ -51,10 +51,10 @@ class admin_options extends rcube_plugin
 
 		  return $this->api->output->frame($attrib, true);
 	  }
-	  
+
 	  /*
 	   * Generate List of available Admin Options and it's data
-	   * Triggers: 
+	   * Triggers:
 	   *    admin_options_list hook
  	   *    admin_options_data hook
 	   *    admin_options_header hook
@@ -64,26 +64,26 @@ class admin_options extends rcube_plugin
 		  // list_options['list'][option_name]['id']['section'];
       $list_options = $this->rc->plugins->exec_hook('admin_options_list',
           array('list' => array(), 'cols' => array('section')));
-      
+
       $sections = $list_options['list'];
       foreach ($sections as $idx => $sect) {
         $sections[$idx]['class'] = $idx;
-        
+
         if ($current and $sect['id'] != $current) {
             continue;
         }
         $blocks = array();
-        
+
         $found = false;
         $data  = $this->rc->plugins->exec_hook('admin_options_data',
             array('section' => $sect['id'], 'blocks' => $blocks, 'current' => $current));
-        
+
         foreach ($data['blocks'] as $key => $block) {
           if (!empty($block['content']) || !empty($block['options'])) {
             $found = true;
           }
         }
-        
+
         if (!$found) {
           unset($sections[$idx]);
         } else {
@@ -99,7 +99,7 @@ class admin_options extends rcube_plugin
 
       return array($sections, $list_options['cols']);
     }
-    
+
     function admin_options_list($attrib)
     {
       // add id to message list table if not specified
@@ -117,7 +117,7 @@ class admin_options extends rcube_plugin
 
       return $out;
     }
-    
+
     function admin_options_form($attrib)
     {
         $current    = rcube_utils::get_input_value('_section', rcube_utils::INPUT_GPC);
@@ -157,7 +157,7 @@ class admin_options extends rcube_plugin
 
         return $out . $form_end;
     }
-    
+
     function admin_options_section_name()
     {
         $current    = rcube_utils::get_input_value('_section', rcube_utils::INPUT_GPC);
@@ -165,45 +165,45 @@ class admin_options extends rcube_plugin
 
         return $sections[$current]['section'];
     }
-	  
+
 	  /*
 	   * Init the option list (sections column)
 	   */
 	  function init_html()
 	  {
 		  $this->include_script('admin_options.js');
-		  
+
 	    $this->api->output->add_handlers(array(
 			  'adminsectionslist' => array($this, 'admin_options_list'),
 			  'prefsframe' => array($this, 'admin_frame'),
 		  ));
-      
+
       $this->api->output->set_pagetitle($this->gettext('administration'));
 		  $this->api->output->send('admin_options.admin_options');
 	  }
-	  
+
 	  /*
 	   * Init the option data (main form column)
 	   */
 	  function load_html ($attrib = null)
 	  {
 		  $this->include_script('admin_options.js');
-		  
+
 		  $this->rc->html_editor('adminoptions');
 			$this->api->output->add_script(sprintf("window.rcmail_editor_settings = %s",
 				json_encode(array(
 				'plugins' => 'autolink charmap code colorpicker hr link paste tabfocus textcolor',
 				'toolbar' => 'bold italic underline alignleft aligncenter alignright alignjustify | outdent indent charmap hr | link unlink | code forecolor | fontselect fontsizeselect'
 			))), 'head');
-		  		  
+
 	    $this->api->output->add_handlers(array(
           'userprefs'   => array($this, 'admin_options_form'),
           'sectionname' => array($this, 'admin_options_section_name'),
       ));
-      
+
 		  $this->api->output->send('admin_options.options_load');
 	  }
-	  
+
 	  /*
 	   * Process the save action
 	   */
@@ -212,9 +212,8 @@ class admin_options extends rcube_plugin
 	    $current    = rcube_utils::get_input_value('_section', rcube_utils::INPUT_GPC);
       $data  = $this->rc->plugins->exec_hook('admin_options_save',
             array('section' => $current, 'abort' => false));
-	    
+
       $this->rc->overwrite_action('plugin.admin_options.load');
 		  $this->load_html($attrib);
-	  } 
+	  }
 }
-
