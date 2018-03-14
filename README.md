@@ -7,7 +7,7 @@ This plugin will only be shown to users if they are part of the configured admin
 
 Users with access to admin-options can see a list of other hooked "admin plugins" and used them from settings tab. For example: other plugins can create webui options to control installed/activated plugins, install new skins, change config options, create popup notifications, and so on.
 
-Stable versions are available from the [Roundcube plugin repository][rcplugrepo] or from the [releases section][releases] on GitHub repository.
+Stable versions are available from the [Roundcube plugin repository][rcplugin] or from the [releases section][releases] on GitHub repository.
 
 Composer Installation
 ----------------------------------------
@@ -31,6 +31,8 @@ If you are using git, change your working directory to your Rouncdube `plugins/`
     $ git clone git@github.com:valarauco/roundcube-plugin-admin-options.git admin-options
 
 Then you can checkout the branch or release you want to use.
+
+:bangbang: Don't forget to enable the plugin in Roundcube configuration file `config/config.inc.php`.
 
 Configuration
 ----------------------------------------
