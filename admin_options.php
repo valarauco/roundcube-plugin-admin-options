@@ -208,6 +208,8 @@ class admin_options extends rcube_plugin
     $data  = $this->rc->plugins->exec_hook('admin_options_save',
         array('section' => $current, 'abort' => false));
 
+    //TODO: manage abort true
+
     $this->rc->overwrite_action('plugin.admin_options.load');
     $this->load_html($attrib);
   }
