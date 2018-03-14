@@ -28,7 +28,7 @@ Place this directory under your Rouncdube `plugins/` folder and rename it as `ad
 
 If you are using git, change your working directory to your Rouncdube `plugins/` folder and clone the repository:
 
-    $ git clone git@github.com:valarauco/roundcube-plugin-admin-options.git admin-options
+    $ git clone https://github.com/valarauco/roundcube-plugin-admin-options.git admin-options
 
 Then you can checkout the branch or release you want to use.
 
